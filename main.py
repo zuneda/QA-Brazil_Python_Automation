@@ -4,6 +4,10 @@ import helpers
 class TestUrbanRoutes:
     @classmethod
     def setup_class(cls):
+        from selenium.webdriver import DesiredCapabilities
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
+        cls.driver = webdriver.Chrome()
         if helpers.is_url_reachable(data.URBAN_ROUTES_URL):
             print("Conectado ao servidor Urban Routes")
         else:
@@ -55,4 +59,7 @@ class TestUrbanRoutes:
         # Dictionary em S8
         print("função criada para procurar modelo do carro")
         pass
+    @classmethod
+    def teardown_class(cls):
+        cls.driver.quit()
 
