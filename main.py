@@ -87,18 +87,64 @@ class TestUrbanRoutes:
         print("função criada para preencher cartão")
 
     def test_comment_for_driver(self):
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.enter_locations(
+            data.ADDRESS_FROM,
+            data.ADDRESS_TO
+        )
+        routes_page.click_call_taxi_button()
+        routes_page.select_comfort_tariff()
+        time.sleep(2)
+        routes_page.enter_message_for_driver(
+            data.MESSAGE_FOR_DRIVER
+        )
+        time.sleep(5)
+        assert (
+                routes_page.get_message_for_driver_value()
+                == data.MESSAGE_FOR_DRIVER
+        )
         print("função criada para deixar comentário para motorista")
 
     def test_order_blanket_and_handkerchiefs(self):
+        self.driver.get(data.URBAN_ROUTES_URL)
+
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_call_taxi_button()
+        routes_page.select_comfort_tariff()
+
+        routes_page.order_blanket_and_handkerchiefs()
+        time.sleep(5)
+
         print("função criada para pedir blanket e handkerchiefs")
 
     def test_order_2_ice_creams(self):
-        numbers_of_ice_creams = 2
+        self.driver.get(data.URBAN_ROUTES_URL)
 
-        for count in range(numbers_of_ice_creams):
-            print("função criada para pedir sorvete")
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_call_taxi_button()
+        routes_page.select_comfort_tariff()
+
+        for _ in range(2):
+            routes_page.add_ice_cream()
+        time.sleep(5)
+        assert routes_page.get_ice_cream_count() == "2"
+
+        print("função criada para pedir 2 sorvetes")
 
     def test_car_search_model_appears(self):
+        self.driver.get(data.URBAN_ROUTES_URL)
+
+        routes_page = UrbanRoutesPage(self.driver)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_call_taxi_button()
+        routes_page.select_comfort_tariff()
+
+        routes_page.click_order_taxi_button()
+        time.sleep(5)
+
         print("função criada para procurar modelo do carro")
 
     @classmethod

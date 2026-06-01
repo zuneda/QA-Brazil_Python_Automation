@@ -29,6 +29,29 @@ class UrbanRoutesPage:
     card_number_field = (By.NAME, 'number')
     card_code_field = (By.NAME, 'code')
     link_button = (By.XPATH,'//button[text()="Adicionar"]')
+    # Mensagem para o motorista
+    message_for_driver_field = (By.ID,"comment")
+
+    # adicionar cobertor
+    blanket_and_handkerchiefs_switch = (
+        By.XPATH,
+        '//span[@class="slider round"]'
+    )
+
+    # Sorvete
+    ice_cream_plus_button = (
+        By.CLASS_NAME,
+        "counter-plus"
+    )
+
+    ice_cream_counter = (By.CLASS_NAME, "counter-value")
+
+    # Testar Botao final
+    order_taxi_button = (
+        By.CLASS_NAME,
+        "smart-button"
+    )
+
     def __init__(self, driver):
         self.driver = driver
 
@@ -127,4 +150,50 @@ class UrbanRoutesPage:
             button
         )
 
+    def enter_message_for_driver(self, message):
+        WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(
+                self.message_for_driver_field
+            )
+        ).send_keys(message)
 
+    def get_message_for_driver_value(self):
+        return WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(
+                self.message_for_driver_field
+            )
+        ).get_attribute("value")
+
+    def order_blanket_and_handkerchiefs(self):
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                self.blanket_and_handkerchiefs_switch
+            )
+        ).click()
+
+    def order_blanket_and_handkerchiefs(self):
+        element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(
+                self.blanket_and_handkerchiefs_switch
+            )
+        )
+
+        self.driver.execute_script(
+            "arguments[0].click();",
+            element
+        )
+
+    def add_ice_cream(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable(self.ice_cream_plus_button)
+        ).click()
+
+    def get_ice_cream_count(self):
+        return WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(self.ice_cream_counter)
+        ).text
+
+    def click_order_taxi_button(self):
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(self.order_taxi_button)
+        ).click()
