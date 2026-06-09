@@ -164,12 +164,7 @@ class UrbanRoutesPage:
             )
         ).get_attribute("value")
 
-    def order_blanket_and_handkerchiefs(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(
-                self.blanket_and_handkerchiefs_switch
-            )
-        ).click()
+
 
     def order_blanket_and_handkerchiefs(self):
         element = WebDriverWait(self.driver, 10).until(
@@ -197,3 +192,27 @@ class UrbanRoutesPage:
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(self.order_taxi_button)
         ).click()
+
+    def get_selected_tariff_option(self):
+        return WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(self.comfort_tariff)
+        ).text
+
+    def get_current_payment_method(self):
+        return WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(self.payment_method_button)
+        ).text
+
+    def is_blanket_and_handkerchiefs_option_checked(self):
+        element = WebDriverWait(self.driver, 5).until(
+            EC.presence_of_element_located(self.blanket_and_handkerchiefs_switch)
+        )
+        return "checked" in element.get_attribute("class") or element.is_displayed()
+
+    def is_order_taxi_popup_displayed(self):
+        return WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((
+                By.CLASS_NAME,
+                "order-header-title"
+            ))
+        ).is_displayed()
